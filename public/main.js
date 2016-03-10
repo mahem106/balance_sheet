@@ -43,7 +43,7 @@ $(document).ready(function() {
         $scope.newTrans.amount = ($scope.newTrans.amount).toFixed(2);
 
         $scope.total = (parseFloat($scope.total) + parseFloat($scope.newTrans.amount));
-        postTrans($scope.newTrans, JSON.stringify($scope.total));
+        postTrans($scope.newTrans, JSON.stringify({total: $scope.total}));
         $scope.trans.push($scope.newTrans);
         $scope.newTrans = {};
       } else if ($scope.newTrans.type === 'withdraw') {
@@ -52,7 +52,7 @@ $(document).ready(function() {
 
         $scope.total = (parseFloat($scope.total) - parseFloat($scope.newTrans.amount));
         console.log($scope.total);
-        postTrans($scope.newTrans, JSON.stringify($scope.total));
+        postTrans($scope.newTrans, JSON.stringify({total: $scope.total}));
         $scope.trans.push($scope.newTrans);
         $scope.newTrans = {};
      }

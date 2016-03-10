@@ -1,6 +1,6 @@
 'use strict';
 
-const PORT = 3340;
+const PORT = process.env.PORT || 3340;
 const transFilename = './transactions.json';
 
 var express = require('express');
@@ -72,6 +72,7 @@ app.delete('/trans/:id', function (req, res) {
     var transaction = trans.find(function(obj) {
       return obj.id === id;
     });
+    console.log(transaction);
     trans.splice(transaction, 1);
     fs.writeFile(transFilename, JSON.stringify(trans), function(err) {
       console.error(err);

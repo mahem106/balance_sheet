@@ -60,6 +60,7 @@ $(document).ready(function() {
 
      $scope.delTrans = function(trans) {
        var delIndex = this.transaction.id;
+       console.log(delIndex);
        $http({
          method: 'DELETE',
          url: `/trans/${delIndex}`,
@@ -68,13 +69,26 @@ $(document).ready(function() {
           return obj.id === delIndex;
         });
         console.log(tran);
-        $scope.total = (parseFloat($scope.total) - parseFloat(tran.amount));
-        $scope.trans.splice(tran, 1);
+        if(tran.type === 'Withdrawal') {
+          $scope.total = (parseFloat($scope.total) + parseFloat(tran.amount));
+          console.log($scope.total);
+        } else if(tran.type === 'Deposit') {
+          $scope.total = (parseFloat($scope.total) - parseFloat(tran.amount));
+          console.log($scope.total);
+        }
+        postTotal(JSON.stringify({total: $scope.total}));
+        $scope.trans.splice(this.$index, 1);
+        console.log(this.$index);
      }
 
      function postTrans(data, total) {
        $http.post("/trans", data).success(function(data, status) {
        })
+       $http.post("/total", total).success(function(total, status) {
+       })
+     };
+
+     function postTotal(total) {
        $http.post("/total", total).success(function(total, status) {
        })
      };
